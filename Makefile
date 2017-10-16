@@ -26,6 +26,7 @@ SRC 	=	main.c			\
 			options.c		\
 			args.c			\
 			data.c			\
+			data2.c			\
 			list.c			\
 			print.c			\
 			sort.c			\

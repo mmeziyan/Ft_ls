@@ -11,6 +11,11 @@
 # include <pwd.h> //passwd
 # include <grp.h> //groups
 # include <string.h>
+# include <sys/acl.h>
+# include <sys/xattr.h>
+
+// #include <attr/xattr.h>
+
 
 # define MAJOR(x)((int32_t)(((u_int32_t)(x) >> 24) & 0xff))
 # define MINOR(x)((int32_t)((x) & 0xffffff))
@@ -30,12 +35,13 @@ typedef struct		s_flst
 	off_t			size;
 	int				min;
 	int				max;
+	ino_t			st_ino;
 	char			*links;
 	long int		mtime;//Heure dernière modification	
 	char			*date;
 	char			*grp;
 	char			*pwd;
-	char			right[10];
+	char			right[11];
 	unsigned long	link;
 	char			fltype;
 	char			*path;
@@ -79,7 +85,7 @@ char	**tab_del_str(char **tab, int i);
 
 //ls_options
 void	opt_del(void);
-int		search_opt(char c);
+int		search_opt(char *s);
 int		option(char **av);
 
 //sorts
@@ -95,9 +101,10 @@ void	ft_sort_params(char **tab);
 char	file_type(t_stat stats);
 void	protection(t_flst *new, t_stat stats);
 void	ft_date(t_flst *new, t_stat stats);
-int	infix(t_flst *new, t_list *st);
+int		infix(t_flst *new, t_list *st);
 t_size 	upsize(t_list *st);
 void	repo(t_list *folder, char *path, t_dir *rep);
+void	acl(t_flst *new);
 
 //list
 void	mcreate(t_flst **new);

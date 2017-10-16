@@ -15,21 +15,21 @@
 char	*clean_av2(char *str)
 {
 	int		n;
-	char	*s;
+	// char	*s;
 	t_stat	st;
 
 	if ((n = lstat(str, &st)) == 0 && !S_ISLNK(st.st_mode))
 		return (ft_strdup(str));
 	else if (S_ISLNK(st.st_mode) && (n = stat(str, &st)) == 0)
 	{
-		if (search_opt('l') || !S_ISDIR(st.st_mode))
+		// if (search_opt('l') || !S_ISDIR(st.st_mode))
 			return (ft_strdup(str));
-		if (!search_opt('l') && S_ISDIR(st.st_mode))
-		{
-			s = ft_strnew(1024);
-			s[readlink(str, s, 1024)] = '\0';
-			return (s);
-		}
+		// if (S_ISDIR(st.st_mode))
+		// {
+		// 	s = ft_strnew(1024);
+		// 	s[readlink(str, s, 1024)] = '\0';
+		// 	return (s);
+		// }
 	}
 	if (n != 0)
 		my_printf("ls: %s: No such file or directory\n", 2, str);

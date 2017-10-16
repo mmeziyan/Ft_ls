@@ -45,7 +45,7 @@ void	repo(t_list *folder, char *path, t_dir *rep)
 	if (infix(tmp, folder) == -1)
 		return ;
 	add_right(folder, tmp);
-	(search_opt('t') == 1) ? place(folder, 't') : place(folder, 'a');
+	(search_opt("t") == 1) ? place(folder, 't') : place(folder, 'a');
 }
 
 void	protection(t_flst *new, t_stat stats)
@@ -66,6 +66,8 @@ void	protection(t_flst *new, t_stat stats)
 	if (stats.st_mode & S_ISVTX)
 		new->right[8] = (stats.st_mode & S_IXOTH) ? 't' : 'T';
 	new->right[9] = '\0';
+	acl(new);
+	
 }
 
 void	ft_date(t_flst *new, t_stat stats)
@@ -102,6 +104,8 @@ int		infix(t_flst *new, t_list *st)
 	{
 		new->links = ft_strnew(1024);
 		new->links[readlink(new->path, (new->links), 1024)] = '\0';
+		search_opt("lgo") && new->path[ft_strlen(new->path)] != '/' ?
+			0 : stat(new->path, &sta);
 	}
 	protection(new, sta);
 	ft_date(new, sta);
@@ -112,8 +116,8 @@ int		infix(t_flst *new, t_list *st)
 	new->type = file_type(sta);
 	pwd = getpwuid(sta.st_uid);
 	grp = getgrgid(sta.st_gid);
-	new->max = new->type == 'c' ? MAJOR((int)sta.st_rdev) : -1;
-	new->min = new->type == 'c' ? MINOR((int)sta.st_rdev) : -1;
+	new->max = (new->type == 'c' || new->type == 'b') ? MAJOR((int)sta.st_rdev) : -1;
+	new->min = (new->type == 'c' || new->type == 'b') ? MINOR((int)sta.st_rdev) : -1;
 	new->pwd = pwd ? ft_strdup(pwd->pw_name) : ft_itoa(sta.st_uid);
 	new->grp = grp ? ft_strdup(grp->gr_name) : ft_itoa(sta.st_gid);
 	return (0);
