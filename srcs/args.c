@@ -58,7 +58,8 @@ char	**clean_av(char **av, int i)
 	x = 0;
 	while (av[i])
 	{
-		new[x] = (n = lstat(av[i], &st)) == 0 ? av[i] : NULL;
+		n = lstat(av[i], &st);
+		new = n == 0 ? av[i] : NULL;
 		(n != 0) ?
 			my_printf("ls: %s: No such file or directory\n", 2, av[i]) : 0;
 		new[x] == NULL ? 0 : x++;

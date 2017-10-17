@@ -19,7 +19,7 @@ void	ft_putcolor(t_flst *prt)
 		ft_putstr("\x1B[0m");
 		return ;
 	}
-	prt->type == 'd' ? ft_putstr("\x1B[36;1m"): 0;
+	prt->type == 'd' ? ft_putstr("\x1B[36;1m") : 0;
 	prt->type == 'l' ? ft_putstr("\x1B[35m") : 0;
 	prt->type == '-' ? ft_putstr("\x1B[0m") : 0;
 	(prt->type == '-' && prt->right[2] == 'x') ? ft_putstr("\x1B[31m") : 0;
@@ -31,7 +31,6 @@ void	ft_putcolor(t_flst *prt)
 
 void	print_opt_lgo(t_flst *prt, t_size upper)
 {
-	my_printf("%c%s", 1, prt->type, prt->right);
 	ft_putspace(upper.link - ft_nblen(prt->link));
 	opt("t") ? ft_putchar(' ') : 0;
 	ft_putnbr(prt->link);
@@ -64,10 +63,11 @@ void	aff_file_params(t_flst *prt, t_size upper, int n)
 	if (opt("A") && !opt("a") &&
 		((ft_strcmp(prt->name, ".") == 0 || ft_strcmp(prt->name, "..") == 0)))
 		return ;
+	opt("lgo") ? my_printf("%c%s", 1, prt->type, prt->right) : 0;
 	opt("lgo") ? print_opt_lgo(prt, upper) : 0;
 	ft_putcolor(prt);
 	(n == 1) ? ft_putstr(prt->name) : ft_putstr(prt->path);
-	ft_putcolor(NULL);	
+	ft_putcolor(NULL);
 	if (opt("F"))
 	{
 		prt->type == 'p' ? ft_putchar('|') : 1;
@@ -132,4 +132,3 @@ void	print_repo(t_list *params)
 		tmp = tmp->next;
 	}
 }
-

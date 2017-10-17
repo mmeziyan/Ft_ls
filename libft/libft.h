@@ -24,7 +24,7 @@ int		get_next_line(int fd, char **line);
 
 void	ft_putchar(unsigned char c);
 void	ft_putchar_fd(char c, int fd);
-void    ft_putspace(int n);
+void	ft_putspace(int n);
 void	ft_putstr(const char *s);
 void	ft_putstr_fd(const char *s, int fd);
 void	ft_putendl_fd(const char *s, int fd);

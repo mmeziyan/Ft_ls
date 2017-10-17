@@ -43,15 +43,8 @@ void	recursive(t_list *st)
 int		main(int ac, char **av)
 {
 	int n;
-	// my_printf("\033[22;34msalut", 1);
-	// printf("x1B[35msalut\n");
-	// ft_putstr("\x1B[34m");
-	// g_i = 0;
-	// while(++g_i < 255)
-	// 	my_printf("%d = %c\t", 1, g_i, g_i);
 
 	g_i = 0;
-	// acl(av[1]);
 	if (ac != -1)
 	{
 		n = option(av);

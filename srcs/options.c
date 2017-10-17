@@ -29,7 +29,7 @@ int		opt(char *s)
 	i = -1;
 	if (!g_opt)
 		return (-1);
-	while(s[++i])
+	while (s[++i])
 		if (ft_strchr(g_opt, s[i]))
 			return (1);
 	return (0);
@@ -52,14 +52,12 @@ int		option(char **av)
 			return (i + 1);
 		while (av[i][++j])
 		{
-			ptr = NULL;			
-			if (!ft_strchr(correct_opt, av[i][j]))
-				error_opt(g_opt[j]);
-			av[i][j] == 'p' ? ptr = ft_strchr(g_opt, 'F') : NULL;
+			(!ft_strchr(correct_opt, av[i][j])) ? error_opt(g_opt[j]) : 0;
+			ptr = av[i][j] == 'p' ? ft_strchr(g_opt, 'F') : NULL;
 			av[i][j] == 'F' ? ptr = ft_strchr(g_opt, 'p') : NULL;
 			av[i][j] == 'c' ? ptr = ft_strchr(g_opt, 'u') : NULL;
 			av[i][j] == 'u' ? ptr = ft_strchr(g_opt, 'c') : NULL;
-			ptr ? NULL : (g_opt = ft_add_char(g_opt, av[i][j], "right"));		
+			ptr ? NULL : (g_opt = ft_add_char(g_opt, av[i][j], "right"));
 			ptr ? *ptr = av[i][j] : 0;
 		}
 	}

@@ -67,7 +67,6 @@ void	protection(t_flst *new, t_stat stats)
 		new->right[8] = (stats.st_mode & S_IXOTH) ? 't' : 'T';
 	new->right[9] = '\0';
 	acl(new);
-	
 }
 
 void	ft_date(t_flst *new, t_stat stats)
@@ -77,7 +76,6 @@ void	ft_date(t_flst *new, t_stat stats)
 
 	new->mtime = opt("u") ? stats.st_atime : stats.st_mtime;
 	new->mtime = opt("c") ? stats.st_ctime : new->mtime;
-	
 	new->date = ft_strsub(ctime(&new->mtime), 4, 7);
 	tmp = new->date;
 	if ((time(NULL) - new->mtime) < 15552000 && time(NULL)
@@ -91,6 +89,9 @@ void	ft_date(t_flst *new, t_stat stats)
 		tmp2 = ft_strsub(ctime(&new->mtime), 19, 5);
 		new->date = ft_strjoin(tmp, tmp2);
 	}
+	new->link = stats.st_nlink;
+	new->size = stats.st_size;
+	new->type = file_type(sta);
 	free(tmp);
 	free(tmp2);
 }
@@ -113,13 +114,12 @@ int		infix(t_flst *new, t_list *st)
 	protection(new, sta);
 	ft_date(new, sta);
 	st->totalb += sta.st_blocks;
-	new->link = sta.st_nlink;
-	new->size = sta.st_size;
-	new->type = file_type(sta);
 	pwd = getpwuid(sta.st_uid);
 	grp = getgrgid(sta.st_gid);
-	new->max = (new->type == 'c' || new->type == 'b') ? MAJOR((int)sta.st_rdev) : -1;
-	new->min = (new->type == 'c' || new->type == 'b') ? MINOR((int)sta.st_rdev) : -1;
+	new->max = (new->type == 'c' || new->type == 'b') ?
+		MAJOR((int)sta.st_rdev) : -1;
+	new->min = (new->type == 'c' || new->type == 'b') ?
+		MINOR((int)sta.st_rdev) : -1;
 	new->pwd = pwd ? ft_strdup(pwd->pw_name) : ft_itoa(sta.st_uid);
 	new->grp = grp ? ft_strdup(grp->gr_name) : ft_itoa(sta.st_gid);
 	return (0);
