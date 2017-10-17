@@ -23,7 +23,7 @@ void	recursive(t_list *st)
 {
 	t_flst *s;
 
-	s = (search_opt("r") ? st->end : st->begin);
+	s = (opt("r") ? st->end : st->begin);
 	while (s)
 	{
 		if (s->type == 'd')
@@ -36,7 +36,7 @@ void	recursive(t_list *st)
 				, 2, recup_name(s->path)) : main(-1, &s->path);
 			}
 		}
-		s = (search_opt("r") ? s->prev : s->next);
+		s = (opt("r") ? s->prev : s->next);
 	}
 }
 

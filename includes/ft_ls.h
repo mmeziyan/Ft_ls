@@ -85,7 +85,7 @@ char	**tab_del_str(char **tab, int i);
 
 //ls_options
 void	opt_del(void);
-int		search_opt(char *s);
+int		opt(char *s);
 int		option(char **av);
 
 //sorts

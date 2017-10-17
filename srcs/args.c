@@ -12,28 +12,32 @@
 
 #include "../includes/ft_ls.h"
 
-char	*clean_av2(char *str)
+void	print_params(char **tab)
 {
-	int		n;
-	// char	*s;
-	t_stat	st;
+	t_list	params;
+	t_flst	*file;
+	t_size	upper;
+	t_flst	*tmp;
+	int		i;
 
-	if ((n = lstat(str, &st)) == 0 && !S_ISLNK(st.st_mode))
-		return (ft_strdup(str));
-	else if (S_ISLNK(st.st_mode) && (n = stat(str, &st)) == 0)
+	list_c(&params);
+	file = NULL;
+	i = -1;
+	while (tab[++i])
 	{
-		// if (search_opt('l') || !S_ISDIR(st.st_mode))
-			return (ft_strdup(str));
-		// if (S_ISDIR(st.st_mode))
-		// {
-		// 	s = ft_strnew(1024);
-		// 	s[readlink(str, s, 1024)] = '\0';
-		// 	return (s);
-		// }
+		mcreate(&file);
+		file->path = ft_strdup(tab[i]);
+		infix(file, &params) == -1 ? 1 : add_right(&params, file);
 	}
-	if (n != 0)
-		my_printf("ls: %s: No such file or directory\n", 2, str);
-	return (NULL);
+	upper = upsize(&params);
+	tmp = params.begin;
+	while (tmp)
+	{
+		(tmp->type == 'd') ? i = -7 : aff_file_params(tmp, upper, 0);
+		tmp = tmp->next;
+	}
+	if (i == -7)
+		print_repo(&params);
 }
 
 char	**clean_av(char **av, int i)
@@ -54,7 +58,9 @@ char	**clean_av(char **av, int i)
 	x = 0;
 	while (av[i])
 	{
-		new[x] = clean_av2(av[i]);
+		new[x] = (n = lstat(av[i], &st)) == 0 ? av[i] : NULL;
+		(n != 0) ?
+			my_printf("ls: %s: No such file or directory\n", 2, av[i]) : 0;
 		new[x] == NULL ? 0 : x++;
 		i++;
 	}

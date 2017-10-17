@@ -33,6 +33,7 @@ SRC 	=	ft_putnbr_fd.c		\
 			ft_toupper.c		\
 			ft_putchar.c		\
 			ft_putchar_fd.c		\
+			ft_putspace.c		\
 			ft_putstr.c			\
 			ft_putstr_fd.c		\
 			ft_putendl.c		\

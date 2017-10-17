@@ -45,7 +45,7 @@ void	repo(t_list *folder, char *path, t_dir *rep)
 	if (infix(tmp, folder) == -1)
 		return ;
 	add_right(folder, tmp);
-	(search_opt("t") == 1) ? place(folder, 't') : place(folder, 'a');
+	(opt("t") == 1) ? place(folder, 't') : place(folder, 'a');
 }
 
 void	protection(t_flst *new, t_stat stats)
@@ -75,17 +75,20 @@ void	ft_date(t_flst *new, t_stat stats)
 	char	*tmp;
 	char	*tmp2;
 
-	new->date = ft_strsub(ctime(&stats.st_mtime), 4, 7);
+	new->mtime = opt("u") ? stats.st_atime : stats.st_mtime;
+	new->mtime = opt("c") ? stats.st_ctime : new->mtime;
+	
+	new->date = ft_strsub(ctime(&new->mtime), 4, 7);
 	tmp = new->date;
-	if ((time(NULL) - stats.st_mtime) < 15552000 && time(NULL)
-		> stats.st_mtime)
+	if ((time(NULL) - new->mtime) < 15552000 && time(NULL)
+		> new->mtime - 2)
 	{
-		tmp2 = ft_strsub(ctime(&stats.st_mtime), 11, 5);
+		tmp2 = ft_strsub(ctime(&new->mtime), 11, 5);
 		new->date = ft_strjoin(tmp, tmp2);
 	}
 	else
 	{
-		tmp2 = ft_strsub(ctime(&stats.st_mtime), 19, 5);
+		tmp2 = ft_strsub(ctime(&new->mtime), 19, 5);
 		new->date = ft_strjoin(tmp, tmp2);
 	}
 	free(tmp);
@@ -104,7 +107,7 @@ int		infix(t_flst *new, t_list *st)
 	{
 		new->links = ft_strnew(1024);
 		new->links[readlink(new->path, (new->links), 1024)] = '\0';
-		search_opt("lgo") && new->path[ft_strlen(new->path)] != '/' ?
+		opt("lgo") && new->path[ft_strlen(new->path)] != '/' ?
 			0 : stat(new->path, &sta);
 	}
 	protection(new, sta);
@@ -112,7 +115,6 @@ int		infix(t_flst *new, t_list *st)
 	st->totalb += sta.st_blocks;
 	new->link = sta.st_nlink;
 	new->size = sta.st_size;
-	new->mtime = sta.st_mtime;
 	new->type = file_type(sta);
 	pwd = getpwuid(sta.st_uid);
 	grp = getgrgid(sta.st_gid);

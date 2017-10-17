@@ -21,15 +21,17 @@ void	ft_sort_params(char **tab)
 	i = ft_tabtool(tab, "len");
 	nbtab = malloc(sizeof(long int) * i);
 	i = 0;
-	while (tab[i] && (search_opt("c") || search_opt("t")))
+	while (tab[i] && opt("tuc"))
 	{
-		stat(tab[i], &stats);
-		nbtab[i] = search_opt("c") ? stats.st_ctime : stats.st_mtime;
+		lstat(tab[i], &stats);
+		ft_putendl(tab[i]);
+		nbtab[i] = opt("u") ? stats.st_atime : stats.st_mtime;
+		nbtab[i] = opt("c") ? stats.st_ctime : nbtab[i];
 		i++;
 	}
 	i = -1;
-	(search_opt("t") || search_opt("c")) ? ft_tab_sort2(tab, nbtab, 0) : 1;
-	search_opt("r") ? ft_tab_rev(&tab, 0) : 1;
+	opt("t") ? ft_tab_sort2(tab, nbtab, 0) : 1;
+	opt("r") ? ft_tab_rev(&tab, 0) : 1;
 	print_params(tab);
 }
 

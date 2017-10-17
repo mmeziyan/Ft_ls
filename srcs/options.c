@@ -18,11 +18,11 @@ void	error_opt(char c)
 {
 	ft_putstr_fd("ls: illegal option -- ", 2);
 	ft_putchar_fd(c, 2);
-	ft_putendl_fd("\nusage: ls [-AFRacgloprt1] [file ...]", 2);
+	ft_putendl_fd("\nusage: ls [-AFRacgloprtu1] [file ...]", 2);
 	exit(1);
 }
 
-int		search_opt(char *s)
+int		opt(char *s)
 {
 	int i;
 
@@ -43,23 +43,25 @@ int		option(char **av)
 	char	*ptr;
 
 	i = 0;
-	j = 0;
-	correct_opt = ft_strdup("AFRacgloprt1");
+	correct_opt = ft_strdup("AFRacgloprtu1");
 	g_opt = ft_strdup("-");
 	while (av[++i] && av[i][0] == '-' && av[i][1])
 	{
+		j = 0;
 		if (av[i][1] == '-' && av[i][2] == '\0')
 			return (i + 1);
 		while (av[i][++j])
 		{
+			ptr = NULL;			
 			if (!ft_strchr(correct_opt, av[i][j]))
 				error_opt(g_opt[j]);
-			ptr = av[i][j] == 'p' ? ft_strchr(g_opt, 'F') : NULL;
-			ptr = av[i][j] == 'F' ? ft_strchr(g_opt, 'p') : NULL;
+			av[i][j] == 'p' ? ptr = ft_strchr(g_opt, 'F') : NULL;
+			av[i][j] == 'F' ? ptr = ft_strchr(g_opt, 'p') : NULL;
+			av[i][j] == 'c' ? ptr = ft_strchr(g_opt, 'u') : NULL;
+			av[i][j] == 'u' ? ptr = ft_strchr(g_opt, 'c') : NULL;
 			ptr ? NULL : (g_opt = ft_add_char(g_opt, av[i][j], "right"));		
 			ptr ? *ptr = av[i][j] : 0;
 		}
-		j = 0;
 	}
 	return (i);
 }
